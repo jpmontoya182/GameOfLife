@@ -1,4 +1,5 @@
 using Application.Common.Interfaces;
+using Application.Game.Commands.CreateGame;
 using Domain.Entities;
 using System.Collections.Generic;
 
@@ -18,14 +19,12 @@ public class CalculatedNewBoard : ICalculatedNewBoard
     int totalLenghtY = 0;
 
 
-    public GameItem ProcessBoard(GameItem game)
+    public CreateGameResponse ProcessBoard(IEnumerable<int[]> game)
     {
-        board = game.Board.ToList();
-        temporalResult = game.Board.ToList();
+        board = game.ToList();
+        temporalResult = game.ToList();
         totalLenghtX = board.Count();
-        totalLenghtY = board[0].Length;
-
-        
+        totalLenghtY = board[0].Length;        
 
         for (var x = 0; x < board.Count(); x++)
         {
@@ -35,13 +34,10 @@ public class CalculatedNewBoard : ICalculatedNewBoard
                 CalculatedValues(positions, x, y);
             }
         }
-
-        // con el resultado de la validacion aplicar filtro
-
         
         var result  = CreateNewBoard(temporalResult);
 
-        return new GameItem{ Board = result };
+        return new CreateGameResponse { GameId = result.GameId, NewBoard = result.NewBoard };
     }
 
     /// <summary>
@@ -78,7 +74,7 @@ public class CalculatedNewBoard : ICalculatedNewBoard
     }
 
 
-    private IList<int[]> CreateNewBoard(IList<int[]> temporalResult)
+    private CreateGameResponse CreateNewBoard(IList<int[]> temporalResult)
     {
         if (temporalResult.Count() == 0) return null;
    
@@ -98,6 +94,6 @@ public class CalculatedNewBoard : ICalculatedNewBoard
             }
         }
 
-        return temporalResult;
+        return new CreateGameResponse { NewBoard = temporalResult.ToList(), GameId = new Guid() };
     }
 }

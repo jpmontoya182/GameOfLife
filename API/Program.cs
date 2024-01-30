@@ -4,6 +4,8 @@ using Application.Common.Interfaces;
 using Application.Game.Utils;
 using Infrastructure;
 using Infrastructure.Repository;
+using Infrastructure.RepositoryOperations;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,18 +16,27 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-// builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-// builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+// Inject dependences
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddApplication();
-builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+builder.Services.AddScoped<ICreateGameDbContext, CreateGameDbContext>();
 builder.Services.AddTransient<ICalculatedNewBoard, CalculatedNewBoard>();   
+
+// BD
+builder.Services.AddDbContext<ApplicationDbContext>(options => 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+//using (var scope = app.Services.CreateScope()) 
+//{
+//    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+//    context.Database.Migrate();
+//}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

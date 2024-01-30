@@ -4,30 +4,23 @@ using MediatR;
 
 namespace Application.Game.Commands.CreateGame;
 
-public record CreateGameCommand: IRequest<GameItem>
+public class CreateGameCommandHandler : IRequestHandler<CreateGameRequest, CreateGameResponse>
 {
-    public GameItem? Board { get; init; }
-}
-
-public class CreateGameCommandHandler : IRequestHandler<CreateGameCommand, GameItem>
-{
-    private readonly IApplicationDbContext _context;
+    private readonly ICreateGameDbContext _context;
     private readonly ICalculatedNewBoard _calculatedNewBoard;
 
-    public CreateGameCommandHandler(IApplicationDbContext context, ICalculatedNewBoard calculatedNewBoard)
+    public CreateGameCommandHandler(ICreateGameDbContext context, ICalculatedNewBoard calculatedNewBoard)
     {
         _context = context;
         _calculatedNewBoard = calculatedNewBoard;
     }
 
-    public async Task<GameItem> Handle(CreateGameCommand request, CancellationToken cancellationToken)
+    public Task<CreateGameResponse> Handle(CreateGameRequest request, CancellationToken cancellationToken)
     {
         var result = _calculatedNewBoard.ProcessBoard(request.Board);
 
-        _context.SaveBoard(result);
+        var responseDb =  _context.SaveBoard(result);
 
-        await _context.SaveChangesAsync(cancellationToken);
-
-        throw new NotImplementedException();
+        return Task.FromResult(responseDb);
     }
 }

@@ -28,7 +28,7 @@ public class Game: ControllerBase
     }
 
     [HttpPost]
-    public async Task<GameItem> Post(CreateGameCommand command)
+    public async Task<CreateGameResponse> Post(CreateGameRequest command)
     {
        return await _mediator.Send(command);
     }

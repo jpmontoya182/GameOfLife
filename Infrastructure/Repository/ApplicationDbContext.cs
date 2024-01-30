@@ -1,18 +1,22 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
+using Infrastructure.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository
 {
-    public class ApplicationDbContext : IApplicationDbContext
+    public class ApplicationDbContext : DbContext
     {
-        public Guid SaveBoard(GameItem board)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            throw new NotImplementedException();
+
         }
 
-        public Task<Guid> SaveChangesAsync(CancellationToken cancellationToken)
+        public DbSet<Game> Games { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            throw new NotImplementedException();
+            modelBuilder.Entity<Game>().ToTable(nameof(Game));
         }
     }
 }
