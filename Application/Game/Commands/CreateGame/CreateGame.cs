@@ -22,7 +22,6 @@ public class CreateGameCommandHandler : IRequestHandler<CreateGameCommand, GameI
 
     public async Task<GameItem> Handle(CreateGameCommand request, CancellationToken cancellationToken)
     {
-        // calcular siguiente board
         var result = _calculatedNewBoard.ProcessBoard(request.Board);
 
         _context.SaveBoard(result);
