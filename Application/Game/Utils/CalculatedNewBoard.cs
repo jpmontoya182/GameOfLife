@@ -2,6 +2,8 @@ using Application.Common.Interfaces;
 using Application.Game.Commands.CreateGame;
 using Domain.Entities;
 using System.Collections.Generic;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Threading;
 
 namespace Application.Game.Utils;
 
@@ -35,9 +37,7 @@ public class CalculatedNewBoard : ICalculatedNewBoard
             }
         }
         
-        var result  = CreateNewBoard(temporalResult);
-
-        return new CreateGameResponse { GameId = result.GameId, NewBoard = result.NewBoard };
+        return new CreateGameResponse { GameId = new Guid(), NewBoard = temporalResult.ToList() };
     }
 
     /// <summary>
@@ -61,39 +61,75 @@ public class CalculatedNewBoard : ICalculatedNewBoard
 
     private void CalculatedValues(List<Positions> positions, int posX, int posY)
     {
-        int liveNeighbors = 0; 
-        foreach (var position in positions)
-        {  
-            if (board[position.x][position.y] == 1)
-            {
-                liveNeighbors++;
-            }
-            
-        }    
-        temporalResult[posX][posY] = liveNeighbors;
-    }
+        int liveNeighbors = 0;
 
-
-    private CreateGameResponse CreateNewBoard(IList<int[]> temporalResult)
-    {
-        if (temporalResult.Count() == 0) return null;
-   
-        for (var x = 0; x < temporalResult.Count(); x++)
+        // live cell
+        if (board[posX][posY] == 1)
         {
-            for (int y = 0; y < temporalResult[x].Length; y++)
+            foreach (var position in positions)
             {
-
-                if (temporalResult[x][y] > 2)
+                if (board[position.x][position.y] == 1)
                 {
-                    temporalResult[x][y] = 1;
-                }
-                else
+                    liveNeighbors++;
+                }   
+            }
+            // Any live cell with fewer than two live neighbors dies, as if by underpopulation.
+            // Any live cell with more than three live neighbors dies, as if by overpopulation.
+            if (liveNeighbors < 2 || liveNeighbors > 3)
+                temporalResult[posX][posY] = 0;
+            // Any live cell with two or three live neighbors lives on to the next generation.
+            if (liveNeighbors == 2 || liveNeighbors == 3)
+                temporalResult[posX][posY] = 1;
+        }
+        else // dead cell 
+        {
+            foreach (var position in positions)
+            {
+                if (board[position.x][position.y] == 1)
                 {
-                    temporalResult[x][y] = 0;
+                    liveNeighbors++;
                 }
             }
+            // Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
+            if (liveNeighbors == 3)
+                temporalResult[posX][posY] = 1;
         }
-
-        return new CreateGameResponse { NewBoard = temporalResult.ToList(), GameId = new Guid() };
     }
+
+
+    //private CreateGameResponse CreateNewBoard(IList<int[]> temporalResult)
+    //{
+    //    if (temporalResult.Count() == 0) return null;
+   
+    //    for (var x = 0; x < temporalResult.Count(); x++)
+    //    {
+    //        for (int y = 0; y < temporalResult[x].Length; y++)
+    //        {
+    //            // Any live cell with fewer than two live neighbors dies, as if by underpopulation.
+    //            if (temporalResult[x][y] < 2 && board[x][y] == 1)
+    //            {
+    //                temporalResult[x][y] = 0;
+    //            }
+
+    //            // Any live cell with two or three live neighbors lives on to the next generation.
+    //            if ((temporalResult[x][y] == 2 || temporalResult[x][y] == 3) && board[x][y] == 1)
+    //            {
+    //                temporalResult[x][y] = 1;
+    //            }
+
+    //            // Any live cell with more than three live neighbors dies, as if by overpopulation.
+    //            if ( temporalResult[x][y] > 3 && board[x][y] == 1)
+    //            {
+    //                temporalResult[x][y] = 0;
+    //            }
+
+    //            // Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
+    //            if (temporalResult[x][y] == 3 && board[x][y] == 0)
+    //            {
+    //                temporalResult[x][y] = 0;
+    //            }
+    //        }
+    //    }
+    //    return new CreateGameResponse { NewBoard = temporalResult.ToList(), GameId = new Guid() };
+    // }
 }

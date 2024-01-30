@@ -16,7 +16,7 @@ public class Game: ControllerBase
     }
 
     [HttpGet("GetNextBoard")]
-    public IEnumerable<GameItem> GetNextBoard(int numberOfBoards)
+    public IEnumerable<GameItem> GetNextBoard(int numberOfBoards, Guid idGame)
     {
         throw new NotImplementedException();
     }

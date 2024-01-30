@@ -49,7 +49,7 @@ namespace Infrastructure.RepositoryOperations
                     }                    
                 }                
        
-                var record = new Game { GameBoard = sb.ToString(), GameId = GameId };
+                var record = new Game { GameBoard = sb.ToString(), GameId = GameId, DateAndTimeCreated = DateTime.Now };
                 _applicationDbContext.Games.Add(record);
                 _applicationDbContext.SaveChanges();
 

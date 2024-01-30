@@ -9,5 +9,7 @@ namespace Infrastructure.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid GameId { get; set; }
         public string GameBoard { get; set; }
+
+        public DateTime DateAndTimeCreated { get; set; }   
     }
 }
