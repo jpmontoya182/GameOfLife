@@ -1,3 +1,10 @@
+using API;
+using Application;
+using Application.Common.Interfaces;
+using Application.Game.Utils;
+using Infrastructure;
+using Infrastructure.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,7 +14,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+// builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+// builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices();
+builder.Services.AddApplication();
+builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+builder.Services.AddTransient<ICalculatedNewBoard, CalculatedNewBoard>();   
 
 var app = builder.Build();
 

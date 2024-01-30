@@ -5,30 +5,32 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API;
 
+[ApiController]
+[Route("api/[controller]")]
 public class Game: ControllerBase 
 {
-    private readonly ILogger<Game> _logger;
-    public Game(ILogger<Game> logger)
+    private readonly IMediator _mediator;
+    public Game(IMediator mediator)
     {
-         _logger = logger;
+        _mediator = mediator;
     }
 
-   //  [HttpGet()]
-   //  public IEnumerable<WeatherForecast> GetNextBoard(int numberOfBoards)
-   //  {
-   //     throw new NotImplementedException();
-   //  }
+    [HttpGet("GetNextBoard")]
+    public IEnumerable<GameItem> GetNextBoard(int numberOfBoards)
+    {
+        throw new NotImplementedException();
+    }
 
-   //  [HttpGet(Name = "GetWeatherForecast")]
-   //  public IEnumerable<WeatherForecast> GetFinal(Guid boardId)
-   //  {
-   //     throw new NotImplementedException();
-   //  }
+    [HttpGet("GetFinalBoard")]
+    public IEnumerable<GameItem> GetFinal(Guid boardId)
+    {
+        throw new NotImplementedException();
+    }
 
     [HttpPost]
-    public async Task<GameItem> Post(ISender sender, CreateGameCommand command)
+    public async Task<GameItem> Post(CreateGameCommand command)
     {
-       return await sender.Send(command);
+       return await _mediator.Send(command);
     }
 
 }
