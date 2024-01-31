@@ -21,7 +21,7 @@ builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddApplication();
 builder.Services.AddScoped<ICreateGameDbContext, CreateGameDbContext>();
-builder.Services.AddTransient<ICalculatedNewBoard, CalculatedNewBoard>();
+builder.Services.AddTransient<INewBoard, NewBoard>();
 builder.Services.AddTransient<INextBoardDbContext, NextBoardDbContext>();
 
 

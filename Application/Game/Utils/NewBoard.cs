@@ -1,19 +1,17 @@
 using Application.Common.Interfaces;
 using Application.Game.Commands.CreateGame;
 using Domain.Entities;
-using MediatR;
 
 namespace Application.Game.Utils;
 
-public class CalculatedNewBoard : ICalculatedNewBoard
+public class NewBoard : INewBoard
 {
     IList<int[]> board = new List<int[]>();
     IList<int[]> temporalResult = new List<int[]>();
     public int totalLenghtX = 0;
     public int totalLenghtY = 0;
 
-
-    public CreateGameResponse ProcessBoard(IEnumerable<int[]> game)
+    public CreateGameResponse CreateNewBoard(IEnumerable<int[]> game)
     {
         try
         {
@@ -26,33 +24,20 @@ public class CalculatedNewBoard : ICalculatedNewBoard
             {
                 for (int y = 0; y < board[x].Length; y++)
                 {
-                    var positions = CalculatedValidPositions(x, y);
+                    var positions = CalculatedNeighbors(x, y);
                     CalculatedValues(positions, x, y);
                 }
             }
-
         }
-        catch (Exception ex)
+        catch (Exception error)
         {
-
-            throw ex;
+            throw error;
         }
  
         return new CreateGameResponse { GameId = new Guid(), NewBoard = temporalResult.ToList() };
     }
-
-    public CreateGameResponse GetNumberOfStatesBoard(IEnumerable<int[]> game, int numberOfBoards)
-    {
-        for (int i = 0; i < numberOfBoards; i++)
-        {
-           game = ProcessBoard(game).NewBoard;
-        }
-
-        return new CreateGameResponse { NewBoard = game.ToList(), GameId = new Guid() };
-
-    }
-
-    public List<Positions> CalculatedValidPositions(int posX, int posY)
+    
+    public List<Positions> CalculatedNeighbors(int posX, int posY)
     {
         var validPositions =    (from x in Enumerable.Range(posX - 1, 3)
                                 from y in Enumerable.Range(posY - 1, 3)

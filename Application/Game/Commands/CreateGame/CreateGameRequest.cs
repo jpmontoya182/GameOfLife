@@ -1,11 +1,8 @@
-﻿using Domain.Entities;
-using MediatR;
+﻿using MediatR;
 
+namespace Application.Game.Commands.CreateGame;
 
-namespace Application.Game.Commands.CreateGame
+public class CreateGameRequest : IRequest<CreateGameResponse>
 {
-    public class CreateGameRequest : IRequest<CreateGameResponse>
-    {
-        public IEnumerable<int[]> Board { get; init; }
-    }
+    public IEnumerable<int[]> Board { get; init; }
 }
