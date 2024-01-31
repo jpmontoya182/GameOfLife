@@ -2,6 +2,7 @@
 using Domain.Entities;
 using Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using Game = Infrastructure.Models.Game;
 
 namespace Infrastructure.Repository
 {

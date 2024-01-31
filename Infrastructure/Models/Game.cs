@@ -7,6 +7,8 @@ namespace Infrastructure.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; } 
+
         public Guid GameId { get; set; }
         public string GameBoard { get; set; }
 

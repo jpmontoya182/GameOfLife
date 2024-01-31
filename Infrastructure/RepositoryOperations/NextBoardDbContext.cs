@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Game = Infrastructure.Models.Game;
 
 namespace Infrastructure.RepositoryOperations
 {
@@ -26,7 +27,10 @@ namespace Infrastructure.RepositoryOperations
             var id = Guid.Parse(GameId.ToString().ToUpper());
             try
             {
-                var query = _applicationDbContext.Games.Single(b => b.GameId == id);
+                var query = _applicationDbContext.Games
+                    .OrderByDescending(x => x.Id)
+                    .FirstOrDefault(b => b.GameId == id);
+
                 var cols = query.Columns;
                 var rows = query.Rows;
                 var Board = query.GameBoard.ToCharArray();
@@ -53,11 +57,11 @@ namespace Infrastructure.RepositoryOperations
             }
         }
 
-        public NextBoardResponse UpdateBoard(Guid GameId, List<int[]> Board)
+        public NextBoardResponse UpdateBoard(Guid gameId, List<int[]> board)
         {
-            List<int[]> newBoard = Board.ToList();
+            List<int[]> newBoard = board.ToList();
             int totalLenghtY = newBoard[0].Length;
-            int totalLenghtX = Board.Count();
+            int totalLenghtX = board.Count();
             var sb = new StringBuilder();
 
             try
@@ -73,7 +77,7 @@ namespace Infrastructure.RepositoryOperations
                 var record = new Game
                 {
                     GameBoard = sb.ToString(),
-                    GameId = GameId,
+                    GameId = gameId,
                     DateAndTimeCreated = DateTime.Now,
                     Rows = totalLenghtX,
                     Columns = totalLenghtY
@@ -85,10 +89,34 @@ namespace Infrastructure.RepositoryOperations
             }
             catch(Exception error) 
             {
-                Console.WriteLine(error);
-                return new NextBoardResponse() { };       
+                throw error;
+                // return new NextBoardResponse() { };       
             }
 
+        }
+
+        public List<Games> GetLastGames(Guid gameId, int numberOfTries = 3) 
+        {
+            var games = new List<Games>();
+
+            var result = _applicationDbContext.Games
+                .Where(g => g.GameId == gameId)
+                .OrderByDescending(x => x.Id)
+                .Take(numberOfTries)
+                .ToList();
+
+            // *** create a mapper
+            games = result.Select(g => new Games()
+            {
+                Id = g.Id,
+                GameId = g.GameId,
+                GameBoard = g.GameBoard,
+                DateAndTimeCreated = g.DateAndTimeCreated,
+                Rows = g.Rows,
+                Columns = g.Columns
+            }).ToList();
+
+            return games;         
         }
     }
 }

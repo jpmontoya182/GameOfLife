@@ -15,24 +15,33 @@ public class CalculatedNewBoard : ICalculatedNewBoard
 
     public CreateGameResponse ProcessBoard(IEnumerable<int[]> game)
     {
-        board = game.ToList();
-        temporalResult = game.ToList();
-        totalLenghtX = board.Count();
-        totalLenghtY = board[0].Length;        
-
-        for (var x = 0; x < board.Count(); x++)
+        try
         {
-            for (int y = 0; y < board[x].Length; y++)
+            board = game.ToList();
+            temporalResult = game.ToList();
+            totalLenghtX = board.Count();
+            totalLenghtY = board[0].Length;
+
+            for (var x = 0; x < board.Count(); x++)
             {
-                var positions = CalculatedValidPositions(x, y);
-                CalculatedValues(positions, x, y);
+                for (int y = 0; y < board[x].Length; y++)
+                {
+                    var positions = CalculatedValidPositions(x, y);
+                    CalculatedValues(positions, x, y);
+                }
             }
+
         }
-        
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
+ 
         return new CreateGameResponse { GameId = new Guid(), NewBoard = temporalResult.ToList() };
     }
 
-    public CreateGameResponse ProcessBoard(IEnumerable<int[]> game, int numberOfBoards)
+    public CreateGameResponse GetNumberOfStatesBoard(IEnumerable<int[]> game, int numberOfBoards)
     {
         for (int i = 0; i < numberOfBoards; i++)
         {
