@@ -14,14 +14,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2E919B8C-17B1-49D9-80A2-88CAFAE50AC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Test", "Application.Test\Application.Test.csproj", "{E5A40C0F-CD48-4A69-9A94-6B29BC8D17EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Test", "Application.Test\Application.Test.csproj", "{E5A40C0F-CD48-4A69-9A94-6B29BC8D17EC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CI_CD", "CI_CD", "{5A62A8A9-102C-4635-B139-9FAE44C4F7E0}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\dotnet-api.yml = .github\workflows\dotnet-api.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Test", "API.Test\API.Test.csproj", "{2F54CC50-4FBC-4D59-A986-DE3F34A4C6E7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{337C8FB1-CB80-4128-B091-0BD4BA047801}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile = Dockerfile
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastruture.Test", "Infrastruture.Test\Infrastruture.Test.csproj", "{D379FA62-4F5F-469E-B73C-0194E84821F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,10 +55,10 @@ Global
 		{E5A40C0F-CD48-4A69-9A94-6B29BC8D17EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5A40C0F-CD48-4A69-9A94-6B29BC8D17EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5A40C0F-CD48-4A69-9A94-6B29BC8D17EC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2F54CC50-4FBC-4D59-A986-DE3F34A4C6E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2F54CC50-4FBC-4D59-A986-DE3F34A4C6E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2F54CC50-4FBC-4D59-A986-DE3F34A4C6E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2F54CC50-4FBC-4D59-A986-DE3F34A4C6E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D379FA62-4F5F-469E-B73C-0194E84821F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D379FA62-4F5F-469E-B73C-0194E84821F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D379FA62-4F5F-469E-B73C-0194E84821F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D379FA62-4F5F-469E-B73C-0194E84821F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,7 +69,7 @@ Global
 		{AC6E9E05-8BAD-402D-BE44-BAD546F506F0} = {51DE5466-F96F-4A96-A220-783D216FB46D}
 		{44FA092F-7916-461E-9734-E2C63C7A2881} = {51DE5466-F96F-4A96-A220-783D216FB46D}
 		{E5A40C0F-CD48-4A69-9A94-6B29BC8D17EC} = {2E919B8C-17B1-49D9-80A2-88CAFAE50AC7}
-		{2F54CC50-4FBC-4D59-A986-DE3F34A4C6E7} = {2E919B8C-17B1-49D9-80A2-88CAFAE50AC7}
+		{D379FA62-4F5F-469E-B73C-0194E84821F8} = {2E919B8C-17B1-49D9-80A2-88CAFAE50AC7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DC06C9FB-17E1-45F0-9880-380C7A26CE0E}

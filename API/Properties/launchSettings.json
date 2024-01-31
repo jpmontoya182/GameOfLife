@@ -33,7 +33,8 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
-        "ASPNETCORE_URLS": "https://+:443;http://+:80"
+        "ASPNETCORE_URLS": "https://+:443;http://+:80",
+        "ConnectionStrings:DefaultConnection": "Server=172.18.128.1;Initial Catalog=GameOfLife;User Id=usergame;Password=password;Trust Server Certificate=True;Encrypt=false"
       },
       "publishAllPorts": true,
       "useSSL": true
