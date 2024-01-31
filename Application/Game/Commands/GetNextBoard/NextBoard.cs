@@ -21,6 +21,7 @@ public class NextBoardCommandHandler : IRequestHandler<NextBoardRequest, NextBoa
         var GameId = request.GameId;
         var numberOfBoards = request.numberOfBoards;
         var boardFromDB = _context.GetBoard(GameId);
+        bool hasConclution = true;
 
         if ( boardFromDB != null || boardFromDB.Count > 0) { 
 
@@ -38,10 +39,26 @@ public class NextBoardCommandHandler : IRequestHandler<NextBoardRequest, NextBoa
                 .Where(g => g.Count() > 1)
                 .Select(g => new { ResultBoard = g.Key, Count = g.Count() });
 
-            if (countValidation.Count() == 1)
+            foreach (var count in countValidation)
             {
-                throw new Exception("There is not game conclusion after three tries  :'(");
+                if (count.Count >= 3)
+                {
+                    hasConclution = false;
+                }
+                
             }
+
+            if (!hasConclution)
+            {
+                boardResult = new NextBoardResponse()
+                {
+                    NewBoard = new List<int[]>(),
+                    GameId = new Guid(),
+                    Message = "There is not game conclusion after three tries  :'("
+                };
+
+            }
+
         }
         else
         {

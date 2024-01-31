@@ -2,5 +2,5 @@
 
 namespace Application.Game.Commands.GetNextBoard;
 
-public class NextBoardResponse : ResponseBase{ }
+public class NextBoardResponse : ResponseBase {}
 

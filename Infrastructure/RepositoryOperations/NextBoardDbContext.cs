@@ -84,7 +84,6 @@ public class NextBoardDbContext : INextBoardDbContext
         catch(Exception error) 
         {
             throw error;
-            // return new NextBoardResponse() { };       
         }
 
     }

@@ -23,11 +23,12 @@ Clean Architecture
 CQRS and Mediator
 
 ## Repository
-SQL 
+SQL Server
 
 ## CI/CD
-- Unit Test 
-- Release a new image in docker hub 
+- Github Actions
+Build, Testing and Docker publication 
+- Release a new image in Docker hub 
 
 ## Test
 - Unit Test
@@ -58,4 +59,4 @@ The code you write should be production ready.
 
 
 ## Commands
-docker run -d jpmontoya182/game-of-life:main --name game-of-life -p 8999:80
+docker run -it --rm -p 5000:80 --name game jpmontoya182/game-of-life:main
