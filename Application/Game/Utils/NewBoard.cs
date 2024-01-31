@@ -88,4 +88,29 @@ public class NewBoard : INewBoard
         }
     }
 
+    public bool ValidateInput(IEnumerable<int[]> game)
+    {
+        try
+        {
+            IList<int[]> board = game.ToList();
+            int totalY = board[0].Length;
+            bool isError = false;
+
+            foreach (var item in board)
+            {
+                if (item.Length != totalY)
+                {
+                    isError = true;
+                }
+            }
+
+            return isError;
+        }
+        catch (Exception error)
+        {
+            throw error;
+        }
+
+    }
+
 }
