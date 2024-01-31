@@ -1,24 +1,16 @@
 using Application.Common.Interfaces;
 using Application.Game.Commands.CreateGame;
 using Domain.Entities;
-using System.Collections.Generic;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Threading;
+using MediatR;
 
 namespace Application.Game.Utils;
-
-class Positions
-{
-    public int x { get; set; }
-    public int y { get; set; }
-}
 
 public class CalculatedNewBoard : ICalculatedNewBoard
 {
     IList<int[]> board = new List<int[]>();
     IList<int[]> temporalResult = new List<int[]>();
-    int totalLenghtX = 0;
-    int totalLenghtY = 0;
+    public int totalLenghtX = 0;
+    public int totalLenghtY = 0;
 
 
     public CreateGameResponse ProcessBoard(IEnumerable<int[]> game)
@@ -40,11 +32,18 @@ public class CalculatedNewBoard : ICalculatedNewBoard
         return new CreateGameResponse { GameId = new Guid(), NewBoard = temporalResult.ToList() };
     }
 
-    /// <summary>
-    /// con las coordenadas, validamos nuestras reglas de negocio y contamos los vivos
-    /// necesitamos compartir la matriz entre los procedimientos ?
-    /// </summary>
-    private List<Positions> CalculatedValidPositions(int posX, int posY)
+    public CreateGameResponse ProcessBoard(IEnumerable<int[]> game, int numberOfBoards)
+    {
+        for (int i = 0; i < numberOfBoards; i++)
+        {
+           game = ProcessBoard(game).NewBoard;
+        }
+
+        return new CreateGameResponse { NewBoard = game.ToList(), GameId = new Guid() };
+
+    }
+
+    public List<Positions> CalculatedValidPositions(int posX, int posY)
     {
         var validPositions =    (from x in Enumerable.Range(posX - 1, 3)
                                 from y in Enumerable.Range(posY - 1, 3)
@@ -57,7 +56,6 @@ public class CalculatedNewBoard : ICalculatedNewBoard
 
         return result;
     }
-
 
     private void CalculatedValues(List<Positions> positions, int posX, int posY)
     {
@@ -96,40 +94,4 @@ public class CalculatedNewBoard : ICalculatedNewBoard
         }
     }
 
-
-    //private CreateGameResponse CreateNewBoard(IList<int[]> temporalResult)
-    //{
-    //    if (temporalResult.Count() == 0) return null;
-   
-    //    for (var x = 0; x < temporalResult.Count(); x++)
-    //    {
-    //        for (int y = 0; y < temporalResult[x].Length; y++)
-    //        {
-    //            // Any live cell with fewer than two live neighbors dies, as if by underpopulation.
-    //            if (temporalResult[x][y] < 2 && board[x][y] == 1)
-    //            {
-    //                temporalResult[x][y] = 0;
-    //            }
-
-    //            // Any live cell with two or three live neighbors lives on to the next generation.
-    //            if ((temporalResult[x][y] == 2 || temporalResult[x][y] == 3) && board[x][y] == 1)
-    //            {
-    //                temporalResult[x][y] = 1;
-    //            }
-
-    //            // Any live cell with more than three live neighbors dies, as if by overpopulation.
-    //            if ( temporalResult[x][y] > 3 && board[x][y] == 1)
-    //            {
-    //                temporalResult[x][y] = 0;
-    //            }
-
-    //            // Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
-    //            if (temporalResult[x][y] == 3 && board[x][y] == 0)
-    //            {
-    //                temporalResult[x][y] = 0;
-    //            }
-    //        }
-    //    }
-    //    return new CreateGameResponse { NewBoard = temporalResult.ToList(), GameId = new Guid() };
-    // }
 }

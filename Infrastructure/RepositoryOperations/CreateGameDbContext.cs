@@ -29,27 +29,19 @@ namespace Infrastructure.RepositoryOperations
             {
                 for (var x = 0; x < newBoard.Count(); x++)
                 {
-                    sb.Append("[");
                     for (int y = 0; y < newBoard[x].Length; y++)
                     {
                         sb.Append(newBoard[x][y].ToString());
-                        if (y < totalLenghtY - 1)
-                        {
-                        sb.Append(",");
-
-                        }
-                    }
-                    if (x < totalLenghtX - 1)
-                    {
-                        sb.Append("],");
-                    }
-                    else
-                    {
-                        sb.Append("]");
-                    }                    
+                    }                      
                 }                
        
-                var record = new Game { GameBoard = sb.ToString(), GameId = GameId, DateAndTimeCreated = DateTime.Now };
+                var record = new Game { 
+                    GameBoard = sb.ToString(), 
+                    GameId = GameId, 
+                    DateAndTimeCreated = DateTime.Now,
+                    Rows = totalLenghtX,
+                    Columns = totalLenghtY                
+                };
                 _applicationDbContext.Games.Add(record);
                 _applicationDbContext.SaveChanges();
 

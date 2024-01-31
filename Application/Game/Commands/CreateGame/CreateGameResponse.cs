@@ -1,8 +1,8 @@
-﻿namespace Application.Game.Commands.CreateGame
+﻿using Domain.Entities;
+
+namespace Application.Game.Commands.CreateGame
 {
-    public class CreateGameResponse
+    public class CreateGameResponse : ResponseBase
     {
-        public Guid GameId { get; set; }
-        public List<int[]>? NewBoard { get; set; }
     }
 }
