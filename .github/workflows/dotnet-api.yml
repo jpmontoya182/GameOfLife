@@ -25,20 +25,12 @@ jobs:
     - name: Install .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 7.0.x
-  
-  test:
-    needs: build
-    runs-on: ubuntu-latest  
-    steps:
+        dotnet-version: 7.0.x  
+
     # Execute all unit tests in the solution
     - name: Execute unit tests
       run: dotnet test
 
-  docker:
-    needs: test
-    runs-on: ubuntu-latest  
-    steps:
     # Push Docker image to Docker Hub     
     - name: Check out the repo
       uses: actions/checkout@v4
