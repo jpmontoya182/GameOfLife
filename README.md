@@ -14,6 +14,8 @@ to every cell in the seed, live or dead; births and deaths occur simultaneously,
 happens is sometimes called a tick.[nb 1] Each generation is a pure function of the preceding one. 
 The rules continue to be applied repeatedly to create further generations.
 
+https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
+
 ## Architecture
 Clean Architecture
 
@@ -27,4 +29,33 @@ SQL
 - Unit Test 
 - Release a new image in docker hub 
 
+## Test
+- Unit Test
 
+### Requirements
+
+The API should have implementations for at least the following:
+1.Allows uploading a new board state, returns id of board
+2.Get next state for board, returns next state
+3.Gets x number of states away for board
+4. Gets final state for board. If board doesn't go to conclusion after x number of attempts, returns error
+
+The service you write should be able to restart/crash/etc... but retain the state of the boards.
+
+The code you write should be production ready.
+
+### Test API
+
+{
+    "board": [[1, 1, 0], [0, 1, 0], [0, 0, 0]]
+}
+
+
+{
+  "gameId": "700A501A-7614-4BDB-9907-61B882C58CAB",
+  "numberOfBoards": 2
+}
+
+
+## Commands
+docker run -d jpmontoya182/game-of-life:main --name game-of-life -p 8999:80
