@@ -1,21 +1,19 @@
-name: .NET Core Desktop
+name: Build, Test, and Creation of Docker Image
 
 on:
   push:
     branches: [ "main" ]
-
+    
+env:
+  Solution_Name: GameOfLife.sln                      
+  Test_Project_Path: Application.Test\Application.Test.csproj     
 
 jobs:
   build:
     strategy:
       matrix:
         configuration: [Release]
-
-    runs-on: ubuntu-latest  
-
-    env:
-      Solution_Name: GameOfLife.sln                      
-      Test_Project_Path: Application.Test\Application.Test.csproj             
+    runs-on: ubuntu-latest         
 
     steps:
     - name: Checkout
