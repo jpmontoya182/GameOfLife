@@ -6,9 +6,9 @@ namespace Application.Game.Commands.CreateGame;
 public class CreateGameCommandHandler : IRequestHandler<CreateGameRequest, CreateGameResponse>
 {
     private readonly ICreateGameDbContext _context;
-    private readonly ICalculatedNewBoard _calculatedNewBoard;
+    private readonly INewBoard _calculatedNewBoard;
 
-    public CreateGameCommandHandler(ICreateGameDbContext context, ICalculatedNewBoard calculatedNewBoard)
+    public CreateGameCommandHandler(ICreateGameDbContext context, INewBoard calculatedNewBoard)
     {
         _context = context;
         _calculatedNewBoard = calculatedNewBoard;
@@ -16,7 +16,7 @@ public class CreateGameCommandHandler : IRequestHandler<CreateGameRequest, Creat
 
     public Task<CreateGameResponse> Handle(CreateGameRequest request, CancellationToken cancellationToken)
     {
-        var result = _calculatedNewBoard.ProcessBoard(request.Board);
+        var result = _calculatedNewBoard.CreateNewBoard(request.Board);
 
         var responseDb =  _context.SaveBoard(result);
 

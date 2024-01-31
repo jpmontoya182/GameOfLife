@@ -1,23 +1,16 @@
-﻿using Application.Common.Interfaces;
-using Domain.Entities;
-using Infrastructure.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Game = Infrastructure.Models.Game;
 
-namespace Infrastructure.Repository
+namespace Infrastructure.Repository;
+
+public class ApplicationDbContext : DbContext
 {
-    public class ApplicationDbContext : DbContext
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options){ }
+
+    public DbSet<Game> Games { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-
-        }
-
-        public DbSet<Game> Games { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Game>().ToTable(nameof(Game));
-        }
+        modelBuilder.Entity<Game>().ToTable(nameof(Game));
     }
 }

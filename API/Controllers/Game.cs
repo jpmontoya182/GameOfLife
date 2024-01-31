@@ -1,6 +1,5 @@
 using Application.Game.Commands.CreateGame;
 using Application.Game.Commands.GetNextBoard;
-using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,16 +15,10 @@ public class Game: ControllerBase
         _mediator = mediator;
     }
 
-    [HttpPost("GetNextBoard")]
-    public async Task<NextBoardResponse> GetNextBoard(NextBoardRequest request)
+    [HttpPost("NextBoard")]
+    public async Task<NextBoardResponse> NextBoard(NextBoardRequest request)
     {
         return await _mediator.Send(request);
-    }
-
-    [HttpGet("GetFinalBoard")]
-    public IEnumerable<GameItem> GetFinal(Guid boardId)
-    {
-        throw new NotImplementedException();
     }
 
     [HttpPost]
@@ -33,5 +26,4 @@ public class Game: ControllerBase
     {
        return await _mediator.Send(request);
     }
-
 }

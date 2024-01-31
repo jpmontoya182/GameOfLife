@@ -6,52 +6,51 @@ using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using System.Text;
 
-namespace Infrastructure.RepositoryOperations
+namespace Infrastructure.RepositoryOperations;
+
+public class CreateGameDbContext : ICreateGameDbContext
 {
-    public class CreateGameDbContext : ICreateGameDbContext
+    private readonly ApplicationDbContext _applicationDbContext;
+
+    public CreateGameDbContext(ApplicationDbContext applicationDbContext)
     {
-        private readonly ApplicationDbContext _applicationDbContext;
+        _applicationDbContext = applicationDbContext;   
+    }
 
-        public CreateGameDbContext(ApplicationDbContext applicationDbContext)
+    public CreateGameResponse SaveBoard(CreateGameResponse board)
+    {
+        var GameId = Guid.NewGuid();
+        List<int[]> newBoard = board.NewBoard.ToList();
+        int totalLenghtY = newBoard[0].Length;
+        int totalLenghtX = board.NewBoard.Count();
+        var sb = new StringBuilder();
+
+        try
         {
-            _applicationDbContext = applicationDbContext;   
-        }
-
-        public CreateGameResponse SaveBoard(CreateGameResponse board)
-        {
-            var GameId = Guid.NewGuid();
-            List<int[]> newBoard = board.NewBoard.ToList();
-            int totalLenghtY = newBoard[0].Length;
-            int totalLenghtX = board.NewBoard.Count();
-            var sb = new StringBuilder();
-
-            try
+            for (var x = 0; x < newBoard.Count(); x++)
             {
-                for (var x = 0; x < newBoard.Count(); x++)
+                for (int y = 0; y < newBoard[x].Length; y++)
                 {
-                    for (int y = 0; y < newBoard[x].Length; y++)
-                    {
-                        sb.Append(newBoard[x][y].ToString());
-                    }                      
-                }                
-       
-                var record = new Game { 
-                    GameBoard = sb.ToString(), 
-                    GameId = GameId, 
-                    DateAndTimeCreated = DateTime.Now,
-                    Rows = totalLenghtX,
-                    Columns = totalLenghtY                
-                };
-                _applicationDbContext.Games.Add(record);
-                _applicationDbContext.SaveChanges();
+                    sb.Append(newBoard[x][y].ToString());
+                }                      
+            }                
+   
+            var record = new Game { 
+                GameBoard = sb.ToString(), 
+                GameId = GameId, 
+                DateAndTimeCreated = DateTime.Now,
+                Rows = totalLenghtX,
+                Columns = totalLenghtY                
+            };
+            _applicationDbContext.Games.Add(record);
+            _applicationDbContext.SaveChanges();
 
-                return new CreateGameResponse { GameId = record.GameId, NewBoard = newBoard };
-                }
-            catch (Exception error)
-            {
-                Console.WriteLine(error);
-                return new CreateGameResponse();
+            return new CreateGameResponse { GameId = record.GameId, NewBoard = newBoard };
             }
+        catch (Exception error)
+        {
+            Console.WriteLine(error);
+            return new CreateGameResponse();
         }
     }
 }

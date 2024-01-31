@@ -1,12 +1,9 @@
-﻿using Application.Common.Interfaces;
-using MediatR;
+﻿using MediatR;
 
+namespace Application.Game.Commands.GetNextBoard;
 
-namespace Application.Game.Commands.GetNextBoard
-{
-    public class NextBoardRequest: IRequest<NextBoardResponse>
-    { 
-        public Guid GameId { get; set; }
-        public int numberOfBoards { get; set;}
-    }
+public class NextBoardRequest: IRequest<NextBoardResponse>
+{ 
+    public Guid GameId { get; set; }
+    public int numberOfBoards { get; set;}
 }
