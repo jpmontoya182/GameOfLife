@@ -1,4 +1,7 @@
-# Game Of life 
+# Game Of Life - Technical test in C# using net7.0 ... still working on the repo/solution
+
+## game description
+
 The universe of the Game of Life is an infinite, two-dimensional orthogonal grid of square cells, 
 each of which is in one of two possible states, live or dead (or populated and unpopulated, respectively). 
 Every cell interacts with its eight neighbors, which are the cells that are horizontally, vertically, or diagonally adjacent. 
@@ -14,10 +17,8 @@ to every cell in the seed, live or dead; births and deaths occur simultaneously,
 happens is sometimes called a tick.[nb 1] Each generation is a pure function of the preceding one. 
 The rules continue to be applied repeatedly to create further generations.
 
-https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
-
 ## Architecture
-Clean Architecture
+It was built with Clean Architecture
 
 ## Patterns
 CQRS and Mediator
@@ -26,24 +27,19 @@ CQRS and Mediator
 SQL Server
 
 ## CI/CD
-- Github Actions
-Build, Testing and Docker publication 
-- Release a new image in Docker hub 
+- GitHub Actions
+    Build, Testing, and Docker publication 
+- Release a new image in the Docker hub 
 
 ## Test
 - Unit Test
 
 ### Requirements
-
-The API should have implementations for at least the following:
-1.Allows uploading a new board state, returns id of board
-2.Get next state for board, returns next state
-3.Gets x number of states away for board
-4. Gets final state for board. If board doesn't go to conclusion after x number of attempts, returns error
-
-The service you write should be able to restart/crash/etc... but retain the state of the boards.
-
-The code you write should be production ready.
+- you can send a new board state through the API, this will return the new board and an ID of new board
+- Gets x number of states away for board, you could send a board ID, and the number of next boards.
+- after three equal answers the API response says that the board has no conclusion 
+- The boards are stored in a database to support restart/crash/etc... events.
+- The code is ready to be in production through a CI/CD pipeline in Git Hub.
 
 ### Test API
 
