@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Application.Game.Commands.CreateGame;
+using Domain.Commands.CreateGame;
 using Domain.Entities;
 using Infrastructure.Models;
 using Infrastructure.Repository;
@@ -32,25 +33,26 @@ public class CreateGameDbContext : ICreateGameDbContext
                 for (int y = 0; y < newBoard[x].Length; y++)
                 {
                     sb.Append(newBoard[x][y].ToString());
-                }                      
-            }                
-   
-            var record = new Game { 
-                GameBoard = sb.ToString(), 
-                GameId = GameId, 
+                }
+            }
+
+            var record = new Game
+            {
+                GameBoard = sb.ToString(),
+                GameId = GameId,
                 DateAndTimeCreated = DateTime.Now,
                 Rows = totalLenghtX,
-                Columns = totalLenghtY                
+                Columns = totalLenghtY
             };
             _applicationDbContext.Games.Add(record);
             _applicationDbContext.SaveChanges();
 
-            return new CreateGameResponse { GameId = record.GameId, NewBoard = newBoard };
-            }
+            return new CreateGameResponse(record.GameId, newBoard, "");
+        }
         catch (Exception error)
         {
             Console.WriteLine(error);
-            return new CreateGameResponse();
+            return new CreateGameResponse(new Guid(), new(), error.ToString());
         }
     }
 }

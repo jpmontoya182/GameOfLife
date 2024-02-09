@@ -1,4 +1,5 @@
 using Application.Common.Interfaces;
+using Domain.Commands.CreateGame;
 using MediatR;
 
 namespace Application.Game.Commands.CreateGame;
@@ -18,12 +19,13 @@ public class CreateGameCommandHandler : IRequestHandler<CreateGameRequest, Creat
     {
         if (_calculatedNewBoard.ValidateInput(request.Board))
         {
-            return Task.FromResult(new CreateGameResponse
-            {
-                GameId = new Guid(),
-                NewBoard = request.Board.ToList(),
-                Message = "The Board does not have the same messure."
-            });
+            return Task.FromResult(
+                new CreateGameResponse(
+                    GameId: new Guid(), 
+                    NewBoard: request.Board.ToList(), 
+                    Message: "The Board does not have the same messure."
+                )
+            );            
         }
 
         var result = _calculatedNewBoard.CreateNewBoard(request.Board);

@@ -1,5 +1,5 @@
-using Application.Game.Commands.CreateGame;
-using Application.Game.Commands.GetNextBoard;
+using Domain.Commands.CreateGame;
+using Domain.Commands.NextBoard;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

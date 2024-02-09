@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Domain.Commands.NextBoard;
 using Domain.Entities;
 using MediatR;
 
@@ -17,9 +18,9 @@ public class NextBoardCommandHandler : IRequestHandler<NextBoardRequest, NextBoa
 
     public Task<NextBoardResponse> Handle(NextBoardRequest request, CancellationToken cancellationToken)
     {
-        NextBoardResponse boardResult = new NextBoardResponse();
         var GameId = request.GameId;
-        var numberOfBoards = request.numberOfBoards;
+        NextBoardResponse boardResult = new NextBoardResponse(GameId, new(), "");
+        var numberOfBoards = request.NumberOfBoards;
         var boardFromDB = _context.GetBoard(GameId);
         bool hasConclution = true;
 
@@ -29,7 +30,7 @@ public class NextBoardCommandHandler : IRequestHandler<NextBoardRequest, NextBoa
             {
                 boardFromDB = _calculatedNewBoard.CreateNewBoard(boardFromDB).NewBoard;
                 _context.UpdateBoard(GameId, boardFromDB!);
-                boardResult = new NextBoardResponse() { NewBoard = boardFromDB?.ToList(), GameId = GameId };
+                boardResult = new NextBoardResponse(GameId, boardFromDB?.ToList(), "");
             }
 
             // validation of last three results
@@ -50,15 +51,13 @@ public class NextBoardCommandHandler : IRequestHandler<NextBoardRequest, NextBoa
 
             if (!hasConclution)
             {
-                boardResult = new NextBoardResponse()
-                {
-                    NewBoard = new List<int[]>(),
-                    GameId = new Guid(),
-                    Message = "There is not game conclusion after three tries  :'("
-                };
+                boardResult = new NextBoardResponse(
+                    new Guid(),
+                    new List<int[]>(),
+                    "There is not game conclusion after three tries  :'("
+                    );
 
             }
-
         }
         else
         {

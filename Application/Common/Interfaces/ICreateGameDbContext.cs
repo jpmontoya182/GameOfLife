@@ -1,4 +1,4 @@
-using Application.Game.Commands.CreateGame;
+using Domain.Commands.CreateGame;
 
 namespace Application.Common.Interfaces;
 
