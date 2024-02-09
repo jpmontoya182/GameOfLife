@@ -1,4 +1,4 @@
-﻿using Application.Game.Commands.GetNextBoard;
+﻿using Domain.Commands.NextBoard;
 using Domain.Entities;
 
 namespace Application.Common.Interfaces;

@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Application.Game.Commands.GetNextBoard;
+using Domain.Commands.NextBoard;
 using Domain.Entities;
 using Infrastructure.Repository;
 using System.Text;
@@ -51,11 +52,11 @@ public class NextBoardDbContext : INextBoardDbContext
         }
     }
 
-    public NextBoardResponse UpdateBoard(Guid gameId, List<int[]> board)
+    public NextBoardResponse UpdateBoard(Guid GameId, List<int[]> Board)
     {
-        List<int[]> newBoard = board.ToList();
+        List<int[]> newBoard = Board.ToList();
         int totalLenghtY = newBoard[0].Length;
-        int totalLenghtX = board.Count();
+        int totalLenghtX = Board.Count();
         var sb = new StringBuilder();
 
         try
@@ -71,7 +72,7 @@ public class NextBoardDbContext : INextBoardDbContext
             var record = new Game
             {
                 GameBoard = sb.ToString(),
-                GameId = gameId,
+                GameId = GameId,
                 DateAndTimeCreated = DateTime.Now,
                 Rows = totalLenghtX,
                 Columns = totalLenghtY
@@ -79,7 +80,7 @@ public class NextBoardDbContext : INextBoardDbContext
             _applicationDbContext.Games.Add(record);
             _applicationDbContext.SaveChanges();
 
-            return new NextBoardResponse { GameId = record.GameId, NewBoard = newBoard };
+            return new NextBoardResponse(record.GameId, newBoard, "");
         }
         catch(Exception error) 
         {
@@ -99,15 +100,7 @@ public class NextBoardDbContext : INextBoardDbContext
             .ToList();
 
         // *** create a mapper
-        games = result.Select(g => new Games()
-        {
-            Id = g.Id,
-            GameId = g.GameId,
-            GameBoard = g.GameBoard,
-            DateAndTimeCreated = g.DateAndTimeCreated,
-            Rows = g.Rows,
-            Columns = g.Columns
-        }).ToList();
+        games = result.Select(g => new Games(g.Id, g.GameId, g.GameBoard, g.Rows, g.Columns, g.DateAndTimeCreated)).ToList();
 
         return games;         
     }

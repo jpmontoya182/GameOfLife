@@ -1,8 +1,3 @@
 namespace Domain.Entities;
 
-public class GameItem
-{
-    public IEnumerable<int[]> Board { get; set; }
-    public int NumberOfStates { get; set; }
-    public Guid GameId { get; set; }
-}
+public record GameItem(IEnumerable<int[]> Board, int NumberOfStates, Guid GameId);
