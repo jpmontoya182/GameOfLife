@@ -1,0 +1,20 @@
+﻿@API_HostAddress = https://localhost:7065
+
+POST {{API_HostAddress}}/api/game/NextBoard
+Content-Type: application/json
+
+{
+  "gameId": "06b0c844-eb97-40b6-9e65-0b6f7c25ea0b",
+  "numberOfBoards": 2
+}
+###
+
+POST {{API_HostAddress}}/api/game
+Content-Type: application/json
+
+{
+"board": [[1, 1, 1], [1, 1, 1], [1, 1, 1]]
+}
+
+
+###
