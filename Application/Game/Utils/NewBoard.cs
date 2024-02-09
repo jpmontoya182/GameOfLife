@@ -1,5 +1,6 @@
 using Application.Common.Interfaces;
 using Application.Game.Commands.CreateGame;
+using Domain.Commands.CreateGame;
 using Domain.Entities;
 
 namespace Application.Game.Utils;
@@ -34,7 +35,7 @@ public class NewBoard : INewBoard
             throw error;
         }
  
-        return new CreateGameResponse { GameId = new Guid(), NewBoard = temporalResult.ToList() };
+        return new CreateGameResponse(new Guid(), temporalResult.ToList(), "");
     }
     
     public List<Positions> CalculatedNeighbors(int posX, int posY)
@@ -42,7 +43,7 @@ public class NewBoard : INewBoard
         var validPositions =    (from x in Enumerable.Range(posX - 1, 3)
                                 from y in Enumerable.Range(posY - 1, 3)
                                 where x >= 0 && y >= 0 && x < totalLenghtX && y < totalLenghtY
-                                select new Positions { x = x, y = y }).ToList();
+                                select new Positions(x, y)).ToList();
 
 
         var originalPosition = validPositions.Where(p => p.y == posY && p.x == posX).ToList();
